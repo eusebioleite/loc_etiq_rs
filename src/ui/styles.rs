@@ -2,11 +2,7 @@ use iced::widget::{button, container};
 use iced::{Color, Theme};
 
 // Cores base extraídas do seu layout
-pub const BG_BLUE: Color = Color::from_rgb(
-    1.0 / 255.0,
-    120.0 / 255.0,
-    255.0 / 255.0,
-); // Alternativa otimizada para from_rgb8(1, 120, 255)
+pub const BG_BLUE: Color = Color::from_rgb(1.0 / 255.0, 120.0 / 255.0, 255.0 / 255.0); // Alternativa otimizada para from_rgb8(1, 120, 255)
 
 pub fn toolbar_container(_theme: &Theme) -> container::Style {
     container::Style {
