@@ -9,7 +9,7 @@ pub fn render<'a>(state: &'a State) -> Element<'a, Message> {
         Message::PrinterSelected(p.to_string())
     })
     .placeholder("Impressora...")
-    .text_size(12)
+    .text_size(18)
     .width(Length::Fill);
 
     container(printer_select)

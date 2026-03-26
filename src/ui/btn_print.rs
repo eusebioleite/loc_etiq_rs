@@ -7,7 +7,7 @@ pub fn render<'a>() -> Element<'a, Message> {
     container(
         button(row![
             Space::new().width(Length::Fill),
-            text("Gerar Etiquetas").size(12),
+            text("Gerar Etiquetas").size(24),
             Space::new().width(Length::Fill)
         ])
         .on_press(Message::Print)

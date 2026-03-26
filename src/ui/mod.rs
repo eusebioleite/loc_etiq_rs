@@ -1,4 +1,4 @@
-pub mod button;
+pub mod btn_print;
 pub mod content;
 pub mod dropdown;
 pub mod qtd_copias;

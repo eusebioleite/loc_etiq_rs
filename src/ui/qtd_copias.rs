@@ -7,9 +7,9 @@ use crate::core::state::State;
 pub fn render<'a>(state: &'a State) -> Element<'a, Message> {
     container(
         row![
-            text("Cópias:").size(12),
+            text("Cópias:").size(18),
             slider(1..=100, state.count_copies, Message::CopiesChanged).step(1),
-            text(format!("{:02}", state.count_copies)).size(12)
+            text(format!("{:02}", state.count_copies)).size(18)
         ]
         .spacing(5),
     )

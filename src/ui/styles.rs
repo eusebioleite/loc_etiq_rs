@@ -37,6 +37,26 @@ pub fn toolbar_container(_theme: &Theme) -> container::Style {
     }
 }
 
+pub fn connection_button(_theme: &Theme, status: button::Status) -> button::Style {
+    let base_color = Color::TRANSPARENT;
+    let hover_color = Color::from_rgb(52.0 / 255.0, 147.0 / 255.0, 255.0 / 255.0);
+    let pressed_color = Color::from_rgb(1.0 / 255.0, 96.0 / 255.0, 204.0 / 255.0);
+
+    button::Style {
+        background: match status {
+            button::Status::Hovered => Some(hover_color.into()),
+            button::Status::Pressed => Some(pressed_color.into()),
+            _ => Some(base_color.into()),
+        },
+        text_color: Color::WHITE,
+        border: iced::Border {
+            radius: (0.0).into(),
+            ..Default::default()
+        },
+        ..Default::default()
+    }
+}
+
 pub fn minimize_button(_theme: &Theme, status: button::Status) -> button::Style {
     let base_color = Color::from_rgb8(233, 146, 9);
     let hover_color = Color::from_rgb8(243, 156, 18);

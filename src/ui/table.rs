@@ -20,6 +20,7 @@ pub fn render<'a>(state: &'a State) -> Element<'a, Message> {
         list_content = list_content.push(
             checkbox(row.selected)
                 .label(&row.description)
+                .text_size(24)
                 .on_toggle(move |is_checked| {
                     Message::ToggleLocation(row_val.description.clone(), is_checked)
                 })
@@ -29,7 +30,7 @@ pub fn render<'a>(state: &'a State) -> Element<'a, Message> {
     }
 
     container(scrollable(list_content))
-        .height(Length::Fixed(240.0))
+        .height(Length::Fixed(405.0))
         .width(Length::Fill)
         .padding(Padding {
             bottom: 10.0,

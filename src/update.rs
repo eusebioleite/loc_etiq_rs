@@ -5,6 +5,17 @@ use iced::window;
 
 pub fn handle(state: &mut State, message: Message) -> iced::Task<Message> {
     match message {
+        // Connections
+        Message::Connections => {
+            state.msg_toast = "Recurso em desenvolvimento.".to_string();
+            state.show_error = true;
+            iced::Task::perform(
+                async {
+                    std::thread::sleep(std::time::Duration::from_secs(2));
+                },
+                |_| Message::ClearNotification
+            )
+        }
         // Print
         Message::Print => {
             let printer = state.selected_printer.clone().unwrap_or_else(|| "Empty".to_string());
