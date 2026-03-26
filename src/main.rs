@@ -6,7 +6,7 @@ mod core;
 mod ui;
 mod update;
 
-use iced::{window, Theme};
+use iced::{ window, Theme };
 
 use crate::core::state::State;
 

@@ -11,7 +11,7 @@ pub fn render<'a>(state: &'a State) -> Element<'a, Message> {
             text("Gerar Etiquetas").size(12),
             Space::new().width(Length::Fill)
         ])
-        .on_press(Message::ClearNotification)
+        .on_press(Message::Print)
         .width(Length::Fill),
     )
     .align_x(Alignment::Center)

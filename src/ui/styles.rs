@@ -2,7 +2,33 @@ use iced::widget::{button, container};
 use iced::{Color, Theme};
 
 // Cores base extraídas do seu layout
-pub const BG_BLUE: Color = Color::from_rgb(1.0 / 255.0, 120.0 / 255.0, 255.0 / 255.0); // Alternativa otimizada para from_rgb8(1, 120, 255)
+pub const BG_BLUE: Color = Color::from_rgb(1.0 / 255.0, 120.0 / 255.0, 255.0 / 255.0);
+pub const SUCCESS: Color = Color::from_rgb(40.0 / 255.0, 167.0 / 255.0, 69.0 / 255.0);
+pub const ERROR: Color = Color::from_rgb(220.0 / 255.0, 53.0 / 255.0, 69.0 / 255.0);
+
+pub fn error_container(_theme: &Theme) -> container::Style {
+    container::Style {
+        background: Some(ERROR.into()),
+        text_color: Some(Color::WHITE),
+        border: iced::Border {
+            radius: (0.0).into(),
+            ..Default::default()
+        },
+        ..Default::default()
+    }
+}
+
+pub fn success_container(_theme: &Theme) -> container::Style {
+    container::Style {
+        background: Some(SUCCESS.into()),
+        text_color: Some(Color::WHITE),
+        border: iced::Border {
+            radius: (0.0).into(),
+            ..Default::default()
+        },
+        ..Default::default()
+    }
+}
 
 pub fn toolbar_container(_theme: &Theme) -> container::Style {
     container::Style {

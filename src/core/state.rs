@@ -1,5 +1,3 @@
-use serde::Deserialize;
-
 use crate::core::printer::get_printers;
 
 const STRING_LOCAIS_ESTOQUE: &str =
@@ -11,31 +9,24 @@ pub struct TableRow {
     pub selected: bool,
 }
 
-#[derive(Deserialize, Debug, Clone, PartialEq, Eq)]
-#[serde(rename_all = "PascalCase")]
-pub struct Printers {
-    pub name: String,
-}
-impl std::fmt::Display for Printers {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.name)
-    }
-}
-
 pub struct State {
-    pub search_query: String,
     pub show_success: bool,
+    pub show_error: bool,
+    pub msg_toast: String,
+    pub search_query: String,
     pub locations: Vec<TableRow>,
-    pub printers: Vec<Printers>,
-    pub selected_printer: Option<Printers>,
+    pub printers: Vec<String>,
+    pub selected_printer: Option<String>,
     pub count_copies: i32,
 }
 
 impl Default for State {
     fn default() -> Self {
         Self {
-            search_query: String::new(),
             show_success: false,
+            show_error: false,
+            msg_toast: String::new(),
+            search_query: String::new(),
             locations: STRING_LOCAIS_ESTOQUE
                 .split(',')
                 .map(|l| TableRow {

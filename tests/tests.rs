@@ -18,21 +18,16 @@ eJzs1DFug0AQBdBFFFv6AlG4SGRfy4WlcDSOwhFcurBCEtg1HQ0apETvFwzFiCcxs5uSiOxKOwXmsTpd
 ^FT757,119^A0I,99,98^FH\^FD[LOCAL_ESTOQUE]^FS
 ^PQ1,0,1,Y^XZ"#;
 
-#[derive(Deserialize, Debug)]
-#[serde(rename_all = "PascalCase")]
-struct Win32Printer {
-    name: String,
-}
-/*
 // Função principal que você vai chamar quando o usuário escolher a impressora
-pub fn print_raw_to_printer(
-    printer_name: &str,
-    raw_data: &[u8],
-) -> Result<(), Box<dyn std::error::Error>> {
+pub fn print(printer_name: &str) -> Result<(), Box<dyn std::error::Error>> {
     unsafe {
         let mut h_printer: HANDLE = HANDLE::default();
 
-        // Converter nome da impressora para wide string
+        // Dados da constante convertidos para bytes para a Win32 API
+        let raw_data = PRN.as_bytes();
+        let data_len = raw_data.len() as u32;
+
+        // Converter nome da impressora para wide string (UTF-16)
         let printer_wide: Vec<u16> = printer_name
             .encode_utf16()
             .chain(std::iter::once(0))
@@ -40,11 +35,9 @@ pub fn print_raw_to_printer(
         let printer_pcwstr = PCWSTR(printer_wide.as_ptr());
 
         // 1. Abre a impressora
-        if !OpenPrinterW(printer_pcwstr, &mut h_printer, None).as_bool() {
-            return Err(format!("Falha ao abrir impressora: {}", printer_name).into());
-        }
+        OpenPrinterW(printer_pcwstr, &mut h_printer, None)?;
 
-        // 2. Informações do documento (tipo RAW é obrigatório para ZPL)
+        // 2. Informações do documento
         let doc_name: Vec<u16> = "Etiqueta_ZPL"
             .encode_utf16()
             .chain(std::iter::once(0))
@@ -57,60 +50,64 @@ pub fn print_raw_to_printer(
             pDatatype: windows::core::PWSTR(data_type.as_ptr() as *mut u16),
         };
 
-        // 3. Inicia o job de impressão
+        // 3. Inicia o job
         let job_id = StartDocPrinterW(h_printer, 1, &mut doc_info as *mut _ as *mut _);
         if job_id == 0 {
-            ClosePrinter(h_printer);
-            return Err("Falha ao iniciar o documento de impressão".into());
+            let _ = ClosePrinter(h_printer);
+            return Err("Falha ao iniciar o documento".into());
         }
 
         // 4. Inicia página
-        if !StartPagePrinter(h_printer).as_bool() {
-            EndDocPrinter(h_printer);
-            ClosePrinter(h_printer);
-            return Err("Falha ao iniciar página".into());
-        }
+        let _ = StartPagePrinter(h_printer);
 
-        // 5. Envia os dados RAW (ZPL)
+        // 5. Envia os dados da constante PRN
         let mut bytes_written: u32 = 0;
         let write_result = WritePrinter(
             h_printer,
             raw_data.as_ptr() as *const _,
-            raw_data.len() as u32,
+            data_len,
             &mut bytes_written,
         );
 
-        if !write_result.as_bool() || bytes_written != (raw_data.len() as u32) {
-            EndPagePrinter(h_printer);
-            EndDocPrinter(h_printer);
-            ClosePrinter(h_printer);
+        if !write_result.as_bool() || bytes_written != data_len {
+            let _ = EndPagePrinter(h_printer);
+            let _ = EndDocPrinter(h_printer);
+            let _ = ClosePrinter(h_printer);
             return Err(format!(
-                "Erro ao escrever na impressora. Enviados: {}/{}",
-                bytes_written,
-                raw_data.len()
+                "Erro Win32 ao escrever. Enviados: {}/{}",
+                bytes_written, data_len
             )
             .into());
         }
 
-        // 6. Finaliza
+        // 6. Cleanup
         let _ = EndPagePrinter(h_printer);
         let _ = EndDocPrinter(h_printer);
-        ClosePrinter(h_printer);
+        let _ = ClosePrinter(h_printer);
 
-        println!("✅ Impressão enviada com sucesso! Job ID: {}", job_id);
+        println!("[KERNEL: SUCCESS] Job ID: {}", job_id);
         Ok(())
     }
 }
-*/
-fn get_system_printers() -> Result<Vec<Win32Printer>, Box<dyn std::error::Error>> {
+
+pub fn get_printers() -> Result<Vec<String>, Box<dyn std::error::Error>> {
+    #[derive(Deserialize, Debug, Clone, PartialEq, Eq)]
+    #[serde(rename_all = "PascalCase")]
+    struct Printers {
+        name: String,
+    }
+
     let wmi_con = WMIConnection::new()?;
-    let results: Vec<Win32Printer> = wmi_con.raw_query("SELECT Name FROM Win32_Printer")?;
-    let filtered: Vec<Win32Printer> = results
+    let results: Vec<Printers> = wmi_con.raw_query("SELECT Name FROM Win32_Printer")?;
+
+    let filtered: Vec<String> = results
         .into_iter()
-        .filter(|p| {
-            !p.name.contains("Microsoft") && !p.name.contains("PDF") && !p.name.contains("Fax")
+        .map(|p| p.name)
+        .filter(|name| {
+            !name.contains("Microsoft") && !name.contains("PDF") && !name.contains("Fax")
         })
         .collect();
+
     Ok(filtered)
 }
 

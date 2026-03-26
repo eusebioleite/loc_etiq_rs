@@ -5,8 +5,8 @@ use crate::core::message::Message;
 use crate::core::state::State;
 
 pub fn render<'a>(state: &'a State) -> Element<'a, Message> {
-    let printer_select = pick_list(&state.printers[..], state.selected_printer.as_ref(), |_p| {
-        Message::ClearNotification
+    let printer_select = pick_list(&state.printers[..], state.selected_printer.as_ref(), |p| {
+        Message::PrinterSelected(p.to_string())
     })
     .placeholder("Impressora...")
     .text_size(12)
