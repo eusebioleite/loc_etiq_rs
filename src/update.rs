@@ -4,6 +4,11 @@ use iced::window;
 
 pub fn handle(state: &mut State, message: Message) -> iced::Task<Message> {
     match message {
+        Message::CopiesChanged(count_copies) => {
+            state.count_copies = count_copies;
+            iced::Task::none()
+        }
+
         // Search
         Message::SearchContents(search_query) => {
             state.search_query = search_query;

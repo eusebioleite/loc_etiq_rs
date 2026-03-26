@@ -1,4 +1,4 @@
-use iced::widget::{button, container, row, text, Space};
+use iced::widget::{container, row, slider, text};
 use iced::{Alignment, Element, Length, Padding};
 
 use crate::core::message::Message;
@@ -6,16 +6,15 @@ use crate::core::state::State;
 
 pub fn render<'a>(state: &'a State) -> Element<'a, Message> {
     container(
-        button(row![
-            Space::new().width(Length::Fill),
-            text("Gerar Etiquetas").size(12),
-            Space::new().width(Length::Fill)
-        ])
-        .on_press(Message::ClearNotification)
-        .width(Length::Fill),
+        row![
+            text("Cópias:").size(12),
+            slider(1..=100, state.count_copies, Message::CopiesChanged).step(1),
+            text(format!("{:02}", state.count_copies)).size(12)
+        ]
+        .spacing(5),
     )
+    .width(Length::Fill)
     .align_x(Alignment::Center)
-    .center_x(Length::Fill)
     .padding(Padding {
         bottom: 5.0,
         top: 0.0,

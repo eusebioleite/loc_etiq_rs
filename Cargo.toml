@@ -7,3 +7,9 @@ edition = "2024"
 iced = "0.14.0"
 image = "0.25.10"
 qrcode = "0.14.1"
+serde = "1.0.228"
+windows = { version = "0.58", features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Printing",
+] }
+wmi = "0.18.3"

@@ -1,11 +1,12 @@
 pub mod button;
 pub mod content;
+pub mod dropdown;
+pub mod qtd_copias;
 pub mod searchbar;
 pub mod styles;
 pub mod success;
 pub mod table;
 pub mod toolbar;
-pub mod utils;
 
 use iced::widget::{column, stack, Space};
 use iced::Element;

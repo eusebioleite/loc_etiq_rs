@@ -13,7 +13,7 @@ use crate::core::state::State;
 pub fn main() -> iced::Result {
     // Parâmetros da janela
     let window_settings = window::Settings {
-        size: iced::Size::new(320.0, 480.0),
+        size: iced::Size::new(320.0, 370.0),
         resizable: false,
         decorations: false,
         exit_on_close_request: true,

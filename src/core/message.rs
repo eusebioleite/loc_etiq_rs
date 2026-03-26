@@ -1,5 +1,8 @@
 #[derive(Debug, Clone)]
 pub enum Message {
+    // Slider Qtd Copias
+    CopiesChanged(i32),
+
     // Searchbar
     SearchContents(String),
 
