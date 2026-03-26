@@ -803,18 +803,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f27ae1dd37df86211c42e150270f82743308803d90a6f6e6651cd730d5e1732f"
 
 [[package]]
-name = "design_system_rs"
-version = "0.1.0"
-dependencies = [
- "iced",
- "image",
- "qrcode",
- "serde",
- "windows 0.58.0",
- "wmi",
-]
-
-[[package]]
 name = "dispatch"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1925,6 +1913,18 @@ name = "litrs"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "11d3d7f243d5c5a8b9bb5d6dd2b1602c0cb0b9db1621bafc7ed66e35ff9fe092"
+
+[[package]]
+name = "loc_etiq_rs"
+version = "0.1.0"
+dependencies = [
+ "iced",
+ "image",
+ "qrcode",
+ "serde",
+ "windows 0.58.0",
+ "wmi",
+]
 
 [[package]]
 name = "lock_api"

@@ -2,9 +2,8 @@ use iced::widget::{button, container, row, text, Space};
 use iced::{Alignment, Element, Length, Padding};
 
 use crate::core::message::Message;
-use crate::core::state::State;
 
-pub fn render<'a>(state: &'a State) -> Element<'a, Message> {
+pub fn render<'a>() -> Element<'a, Message> {
     container(
         button(row![
             Space::new().width(Length::Fill),

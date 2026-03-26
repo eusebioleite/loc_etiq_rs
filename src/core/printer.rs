@@ -17,12 +17,14 @@ eJzs1DFug0AQBdBFFFv6AlG4SGRfy4WlcDSOwhFcurBCEtg1HQ0apETvFwzFiCcxs5uSiOxKOwXmsTpd
 ^FT757,119^A0I,99,98^FH\^FD[LOCAL_ESTOQUE]^FS
 ^PQ1,0,1,Y^XZ"#;
 
-pub fn print(printer_name: &str) -> Result<(), Box<dyn std::error::Error>> {
+pub fn print(printer_name: &str, location: &str) -> Result<(), Box<dyn std::error::Error>> {
     unsafe {
         let mut h_printer: HANDLE = HANDLE::default();
 
         // Dados da constante convertidos para bytes para a Win32 API
-        let raw_data = PRN.as_bytes();
+        let prn_file = PRN.replace("[LOCAL_ESTOQUE]", location);
+        println!("{}", prn_file);
+        let raw_data = prn_file.as_bytes();
         let data_len = raw_data.len() as u32;
 
         // Converter nome da impressora para wide string (UTF-16)
@@ -83,7 +85,6 @@ pub fn print(printer_name: &str) -> Result<(), Box<dyn std::error::Error>> {
         let _ = EndDocPrinter(h_printer);
         let _ = ClosePrinter(h_printer);
 
-        println!("[KERNEL: SUCCESS] Job ID: {}", job_id);
         Ok(())
     }
 }

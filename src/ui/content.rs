@@ -10,7 +10,7 @@ use crate::ui::table;
 
 pub fn render<'a>(state: &'a State) -> Element<'a, Message> {
     let searchbar = searchbar::render(&state);
-    let btn = crate::ui::button::render(&state);
+    let btn = crate::ui::button::render();
     let table = table::render(&state);
     let dpd = dropdown::render(&state);
     let slider = qtd_copias::render(&state);
