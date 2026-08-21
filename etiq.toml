@@ -1,0 +1,49 @@
+locais = [
+  "A01", "A02", "A03", "A04", "A05", "A06", "A07", "A08", "A09", "A10", "A11", "A12", "A13", "A14", "A15", "A16", "A17", "A18",
+  "B01", "B02", "B03", "B04", "B05",
+  "C01", "C02", "C03", "C04", "C05", "C06", "C07",
+  "D01", "D02", "D03", "D04", "D05",
+  "E01", "E02", "E03",
+  "F01", "F02", "F03", "F04",
+  "G01", "G02", "G03", "G04", "G05",
+  "H01", "H02", "H03",
+  "I01", "I02", "I03",
+  "J01", "J02", "J03",
+  "K01", "K02", "K03",
+  "L01", "L02", "L03", "L04", "L05", "L06",
+  "M01", "M02",
+  "N01", "N02",
+  "O01", "O02", "O03", "O04",
+  "P01", "P02", "P03", "P04", "P05", "P06", "P07",
+  "Q01", "Q02", "Q03", "Q04",
+  "R01", "R02", "R03", "R04", "R05", "R06",
+  "S01", "S02",
+  "T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08", "T09", "T10",
+  "U01", "U02", "U03", "U04", "U05", "U06", "U07", "U08", "U09", "U10", "U11", "U12", "U13",
+  "V01", "V02",
+  "X01", "X02", "X03", "X04",
+  "Y01", "Y02", "Y03", "Y04",
+  "W01", "W02",
+  "Z01", "Z02",
+  "AA01", "AA02", "AA03", "AA04", "AA05", "AA06", "AA07",
+  "AB01", "AB02", "AB03", "AB04", "AB05", "AB06", "AB07", "AB08", "AB09", "AB10",
+  "AC01", "AC02", "AC03", "AC04", "AC05", "AC06", "AC07", "AC08", "AC09", "AC10", "AC11", "AC12", "AC13",
+  "AD01", "AD02", "AD03", "AD04", "AD05", "AD06", "AD07", "AD08", "AD09", "AD10",
+  "AE01", "AE02", "AE03",
+  "AF01", "AF02", "AF03", "AF04", "AF05", "AF06", "AF07"
+]
+zpl = '''
+CT~~CD,~CC^~CT~
+^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR4,4~SD10^JUS^LRN^CI0^XZ
+^XA
+^MMT
+^PW831
+^LL0591
+^LS0
+^FO0,0^GFA,59904,59904,00104,:Z64:
+eJzs1DFug0AQBdBFFFv6AlG4SGRfy4WlcDSOwhFcurBCEtg1HQ0apETvFwzFiCcxs5uSiOxKOwXmsTpdpDOtTigzjZVpYp17dfJX5PBPz9d47lt9e9O8BnQZIp302deXUCZ1w1Kb52bb7uQylvax3bc39fs5dA3W/5WHWCfdlnLqg53zUrpgpgKXcKefyznaKYO5RTtl0a7RTrs4wcf0xxl/n03wMa3CYc4Y7aTZaeOdeQPKNkTmeqQTfl2XmyD34c4Hh/MPnbeDnHcOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4fw15xsAAP//7dQxjsIwEAVQWSkoc4RcZAXXokCCo+UoHIFyC0RWJE7YigZ9S7t6v/C4iPJke2wOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4nD/h7Bs5XxxOc2eMO6fn0OWdY1PnGne+n0PJO7fZuaWZ0tRZdi+Z2gHHuDPO5ZR26kuwTzv9ZS6HtDMszhB3llKXlUs9mPiDXRttF76o5b7ULnxR1/+vXirbfp2zzjDWyWF889XnOV9WMNoIZVpnu0fS6bfjL1OwE/rptVtTNNfNGaLOa21dkvn9CpQ2jMg/yw9i3ngF:D49E
+^BY4,3,241^FT757,244^BCI,,N,N
+^FD>:[LOCAL_ESTOQUE]^FS
+^FT757,119^A0I,99,98^FH\^FD[LOCAL_ESTOQUE]^FS
+^PQ1,0,1,Y^XZ
+'''

@@ -1,7 +1,5 @@
 #[derive(Debug, Clone)]
 pub enum Message {
-    // Event that opens the connections tab
-    Connections,
     // Event that sends a command to the printer
     Print,
     // Event that handles the selection of a printer in the dropdown

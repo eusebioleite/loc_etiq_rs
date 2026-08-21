@@ -3,12 +3,18 @@
 mod core;
 mod ui;
 mod update;
+mod config;
 
 use iced::{ window, Theme };
 
 use crate::core::state::State;
 
 pub fn main() -> iced::Result {
+    match config::init() {
+        Ok(c) => c,
+        Err(_) => panic!("Não encontrado arquivo de configuração.")
+    };
+
     // Parâmetros da janela
     let window_settings = window::Settings {
         size: iced::Size::new(520.0, 580.0),

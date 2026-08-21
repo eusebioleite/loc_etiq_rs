@@ -3,26 +3,14 @@ use windows::core::PCWSTR;
 use windows::Win32::Foundation::HANDLE;
 use windows::Win32::Graphics::Printing::*;
 use wmi::WMIConnection;
-const PRN: &str = r#"CT~~CD,~CC^~CT~
-^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR4,4~SD10^JUS^LRN^CI0^XZ
-^XA
-^MMT
-^PW831
-^LL0591
-^LS0
-^FO0,0^GFA,59904,59904,00104,:Z64:
-eJzs1DFug0AQBdBFFFv6AlG4SGRfy4WlcDSOwhFcurBCEtg1HQ0apETvFwzFiCcxs5uSiOxKOwXmsTpdpDOtTigzjZVpYp17dfJX5PBPz9d47lt9e9O8BnQZIp302deXUCZ1w1Kb52bb7uQylvax3bc39fs5dA3W/5WHWCfdlnLqg53zUrpgpgKXcKefyznaKYO5RTtl0a7RTrs4wcf0xxl/n03wMa3CYc4Y7aTZaeOdeQPKNkTmeqQTfl2XmyD34c4Hh/MPnbeDnHcOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4fw15xsAAP//7dQxjsIwEAVQWSkoc4RcZAXXokCCo+UoHIFyC0RWJE7YigZ9S7t6v/C4iPJke2wOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4nD/h7Bs5XxxOc2eMO6fn0OWdY1PnGne+n0PJO7fZuaWZ0tRZdi+Z2gHHuDPO5ZR26kuwTzv9ZS6HtDMszhB3llKXlUs9mPiDXRttF76o5b7ULnxR1/+vXirbfp2zzjDWyWF889XnOV9WMNoIZVpnu0fS6bfjL1OwE/rptVtTNNfNGaLOa21dkvn9CpQ2jMg/yw9i3ngF:D49E
-^BY4,3,241^FT757,244^BCI,,N,N
-^FD>:[LOCAL_ESTOQUE]^FS
-^FT757,119^A0I,99,98^FH\^FD[LOCAL_ESTOQUE]^FS
-^PQ1,0,1,Y^XZ"#;
 
 pub fn print(printer_name: &str, location: &str) -> Result<(), Box<dyn std::error::Error>> {
     unsafe {
         let mut h_printer: HANDLE = HANDLE::default();
-
+        
+        let prn = crate::config::get().zpl.clone();
         // Dados da constante convertidos para bytes para a Win32 API
-        let prn_file = PRN.replace("[LOCAL_ESTOQUE]", location);
+        let prn_file = prn.replace("[LOCAL_ESTOQUE]", location);
         println!("{}", prn_file);
         let raw_data = prn_file.as_bytes();
         let data_len = raw_data.len() as u32;

@@ -2,6 +2,7 @@ use iced::widget::{button, container, row, text, Space};
 use iced::{Alignment, Element, Length, Padding};
 
 use crate::core::message::Message;
+use crate::ui::styles;
 
 pub fn render<'a>() -> Element<'a, Message> {
     container(
@@ -11,6 +12,7 @@ pub fn render<'a>() -> Element<'a, Message> {
             Space::new().width(Length::Fill)
         ])
         .on_press(Message::Print)
+        .style(styles::primary_button)
         .width(Length::Fill),
     )
     .align_x(Alignment::Center)

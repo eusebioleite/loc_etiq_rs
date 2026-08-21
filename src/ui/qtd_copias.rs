@@ -3,12 +3,13 @@ use iced::{Alignment, Element, Length, Padding};
 
 use crate::core::message::Message;
 use crate::core::state::State;
+use crate::ui::styles;
 
 pub fn render<'a>(state: &'a State) -> Element<'a, Message> {
     container(
         row![
             text("Cópias:").size(18),
-            slider(1..=100, state.count_copies, Message::CopiesChanged).step(1),
+            slider(1..=100, state.count_copies, Message::CopiesChanged).step(1).style(styles::slider_style),
             text(format!("{:02}", state.count_copies)).size(18)
         ]
         .spacing(5),
