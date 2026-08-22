@@ -1,3 +1,4 @@
+pub mod add_location;
 pub mod btn_print;
 pub mod content;
 pub mod dropdown;
@@ -37,5 +38,9 @@ pub fn view(state: &State) -> Element<'_, Message> {
         main_stack = main_stack.push(toast);
     }
 
-    column![toolbar, Space::new().height(10), main_stack].into()
+    container(column![toolbar, Space::new().height(10), main_stack])
+        .width(Length::Fill)
+        .height(Length::Fill)
+        .style(styles::main_container)
+        .into()
 }

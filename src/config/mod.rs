@@ -1,84 +1,128 @@
-use anyhow::Context;
 use serde::{Deserialize, Serialize};
 use std::fs;
-use std::sync::OnceLock;
-
-// =====================================================================
-// STRUCT RAIZ DO ARQUIVO TOML
-// =====================================================================
+use std::sync::RwLock;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct RootConfig {
+pub struct Config {
     #[serde(default)]
     pub locais: Vec<String>,
     pub zpl: String,
 }
 
-impl RootConfig {
+const DEFAULT_CONFIG: &str = r#"# Lista de locais de estoque disponíveis
+# Exemplo: locais = ["PRAT-01", "PRAT-02", "PALLET-A"]
+locais = []
+
+# Template ZPL para impressão das etiquetas.
+# A tag [LOCAL_ESTOQUE] será substituída pelo nome do local selecionado.
+# Exemplo:
+# zpl = '''
+# ^XA
+# ^FO50,50^ADN,36,20^FD[LOCAL_ESTOQUE]^FS
+# ^XZ
+# '''
+zpl = '''
+'''
+"#;
+
+impl Config {
     pub fn validate(&self) -> Result<(), String> {
         for (i, local) in self.locais.iter().enumerate() {
             if local.trim().is_empty() {
-                return Err(format!("O item no índice {} em 'locais' não pode estar vazio.", i));
+                return Err(format!(
+                    "O item no índice {} em 'locais' não pode estar vazio.",
+                    i
+                ));
             }
-        }
-        if self.zpl.is_empty() {
-            return Err("O item 'zpl' não pode estar vazio.".to_string());
         }
         Ok(())
     }
 }
 
-// =====================================================================
-// GLOBAL SINGLETON
-// =====================================================================
+static CONFIG: RwLock<Option<Config>> = RwLock::new(None);
 
-/// Process-wide config instance. Populated once by `init()` at startup.
-static CONFIG: OnceLock<RootConfig> = OnceLock::new();
-
-/// Returns a reference to the global config.
-/// Panics if called before `init()`.
-pub fn get() -> &'static RootConfig {
+pub fn get() -> Config {
     CONFIG
-        .get()
+        .read()
+        .unwrap()
+        .as_ref()
         .expect("config::init() deve ser chamado antes de config::get()")
+        .clone()
 }
 
-// =====================================================================
-// FUNÇÃO DE INICIALIZAÇÃO
-// =====================================================================
-
-pub fn init() -> anyhow::Result<()> {
+pub fn reload() -> Result<(), String> {
     let path = std::path::Path::new("etiq.toml");
 
-    if !path.is_file() {
-        anyhow::bail!(
-            "Arquivo de configuração não encontrado em '{}'. Crie o arquivo antes de iniciar.",
-            path.display()
-        );
-    }
-
     let config_file = fs::read_to_string(path)
-        .with_context(|| format!("Erro ao ler o arquivo de configuração em {}", path.display()))?;
+        .map_err(|e| format!("Erro ao ler arquivo de configuração: {}", e))?;
 
-    let root_config: RootConfig = toml::from_str(&config_file).with_context(|| {
-        format!(
-            "Erro de sintaxe no TOML ({})",
-            path.display()
-        )
-    })?;
+    let root_config: Config = toml::from_str(&config_file)
+        .map_err(|e| format!("Erro ao processar arquivo de configuração: {}", e))?;
 
-    if let Err(err_msg) = root_config.validate() {
-        anyhow::bail!(
-            "Configuração inválida no arquivo TOML ({}): {}",
-            path.display(),
-            err_msg
-        );
-    }
+    root_config.validate()?;
 
-    // Armazena no singleton global. Falha apenas se chamado duas vezes.
-    CONFIG
-        .set(root_config)
-        .map_err(|_| anyhow::anyhow!("config::init() foi chamado mais de uma vez"))?;
+    *CONFIG.write().unwrap() = Some(root_config);
 
     Ok(())
+}
+
+pub fn add_location(new_loc: String) -> Result<(), String> {
+    let mut config = get();
+    if !config.locais.contains(&new_loc) {
+        config.locais.push(new_loc);
+        let config_str = toml::to_string(&config)
+            .map_err(|e| format!("Erro ao serializar config: {}", e))?;
+        std::fs::write("etiq.toml", config_str)
+            .map_err(|e| format!("Erro ao salvar arquivo de configuração: {}", e))?;
+        *CONFIG.write().unwrap() = Some(config);
+    }
+    Ok(())
+}
+
+pub fn remove_location(loc_to_remove: &str) -> Result<(), String> {
+    let mut config = get();
+    if let Some(pos) = config.locais.iter().position(|l| l == loc_to_remove) {
+        config.locais.remove(pos);
+        let config_str = toml::to_string(&config)
+            .map_err(|e| format!("Erro ao serializar config: {}", e))?;
+        std::fs::write("etiq.toml", config_str)
+            .map_err(|e| format!("Erro ao salvar arquivo de configuração: {}", e))?;
+        *CONFIG.write().unwrap() = Some(config);
+    }
+    Ok(())
+}
+
+pub fn init() -> Result<(), String> {
+    let path = std::path::Path::new("etiq.toml");
+
+    match fs::metadata(path) {
+        Ok(meta) if meta.is_file() => (),
+        _ => {
+            fs::write(path, DEFAULT_CONFIG)
+                .map_err(|e| format!("Erro ao criar arquivo etiq.toml: {}", e))?;
+        }
+    }
+
+    reload()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_default_config_parsing() {
+        let config: Config = toml::from_str(DEFAULT_CONFIG).expect("DEFAULT_CONFIG must be valid TOML");
+        assert!(config.validate().is_ok());
+        assert_eq!(config.locais.len(), 0);
+    }
+
+    #[test]
+    fn test_validation_empty_location() {
+        let config = Config {
+            locais: vec!["PRAT-01".to_string(), "".to_string()],
+            zpl: "test".to_string(),
+        };
+        assert!(config.validate().is_err());
+    }
 }

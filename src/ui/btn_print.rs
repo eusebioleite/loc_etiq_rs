@@ -1,4 +1,4 @@
-use iced::widget::{button, container, row, text, Space};
+use iced::widget::{Space, button, container, row, text};
 use iced::{Alignment, Element, Length, Padding};
 
 use crate::core::message::Message;
@@ -8,7 +8,7 @@ pub fn render<'a>() -> Element<'a, Message> {
     container(
         button(row![
             Space::new().width(Length::Fill),
-            text("Gerar Etiquetas").size(24),
+            text("Imprimir").size(24),
             Space::new().width(Length::Fill)
         ])
         .on_press(Message::Print)

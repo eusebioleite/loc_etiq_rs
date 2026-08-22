@@ -1923,12 +1923,12 @@ checksum = "11d3d7f243d5c5a8b9bb5d6dd2b1602c0cb0b9db1621bafc7ed66e35ff9fe092"
 name = "loc_etiq_rs"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "embed-resource",
  "iced",
+ "lucide-icons",
  "serde",
  "toml 1.1.4+spec-1.1.0",
- "windows 0.58.0",
+ "windows 0.62.2",
  "winres",
  "wmi",
 ]
@@ -1962,6 +1962,15 @@ name = "lru"
 version = "0.16.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a1dc47f592c06f33f8e3aea9591776ec7c9f9e4124778ff8a3c3b87159f7e593"
+
+[[package]]
+name = "lucide-icons"
+version = "1.33.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "77354a0b4473e47ad0b6204ed26d8ec1bd8a31eb9051867bc43e944e2ed0f673"
+dependencies = [
+ "iced",
+]
 
 [[package]]
 name = "malloc_buf"

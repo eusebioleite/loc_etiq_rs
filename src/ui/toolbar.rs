@@ -1,4 +1,4 @@
-use iced::widget::{button, container, row, text, MouseArea, Space, image};
+use iced::widget::{MouseArea, Space, button, container, row, text};
 use iced::{Element, Length};
 
 use crate::core::message::Message;
@@ -8,7 +8,12 @@ pub fn render<'a>() -> Element<'a, Message> {
     MouseArea::new(
         container(
             row![
-                image(image::Handle::from_path("assets/logo.png")).width(24).height(24),
+                Space::new().width(Length::Fixed(20.0)),
+                text("Imprimir Etiquetas de Local de Estoque")
+                    .size(16)
+                    .style(|_theme| iced::widget::text::Style {
+                        color: Some(styles::TEXT_LIGHT)
+                    }),
                 Space::new().width(Length::Fill),
                 button(text("—").size(16))
                     .style(styles::minimize_button)

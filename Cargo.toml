@@ -4,16 +4,24 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-anyhow = "1.0.104"
-iced = { version = "0.14.0", features = ["image"] }
+iced = { version = "0.14.0", features = ["image", "advanced"] }
+lucide-icons = { version = "1.33.0", features = ["iced"] }
 serde = "1.0.22"
 toml = "1.1.4"
-windows = { version = "0.58", features = [
+windows = { version = "0.62.2", features = [
     "Win32_Foundation",
     "Win32_Graphics_Printing",
+    "Win32_Graphics_Gdi",
 ] }
 wmi = "0.18.3"
 
 [build-dependencies]
 embed-resource = "3.0"
 winres = "0.1"
+
+[profile.release]
+opt-level = 3        # Maximum optimization for speed (use 'z' instead if you want to optimize for size)
+lto = true           # Enable Link-Time Optimization (significantly improves optimization across crates)
+codegen-units = 1    # Compiles the whole project as a single unit (slower compile time, but better optimization)
+panic = "abort"      # Aborts on panic instead of unwinding (removes unwinding code, reducing size and slightly improving performance)
+strip = true         # Strips symbols from the final binary (significantly reduces file size)

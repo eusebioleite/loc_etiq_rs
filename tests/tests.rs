@@ -1,6 +1,5 @@
 use serde::Deserialize;
 use windows::core::PCWSTR;
-use windows::Win32::Foundation::HANDLE;
 use windows::Win32::Graphics::Printing::*;
 use wmi::WMIConnection;
 
@@ -21,7 +20,7 @@ eJzs1DFug0AQBdBFFFv6AlG4SGRfy4WlcDSOwhFcurBCEtg1HQ0apETvFwzFiCcxs5uSiOxKOwXmsTpd
 // Função principal que você vai chamar quando o usuário escolher a impressora
 pub fn print(printer_name: &str) -> Result<(), Box<dyn std::error::Error>> {
     unsafe {
-        let mut h_printer: HANDLE = HANDLE::default();
+        let mut h_printer = PRINTER_HANDLE::default();
 
         // Dados da constante convertidos para bytes para a Win32 API
         let raw_data = PRN.as_bytes();

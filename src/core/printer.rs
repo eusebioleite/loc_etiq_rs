@@ -1,14 +1,17 @@
 use serde::Deserialize;
 use windows::core::PCWSTR;
-use windows::Win32::Foundation::HANDLE;
 use windows::Win32::Graphics::Printing::*;
 use wmi::WMIConnection;
 
 pub fn print(printer_name: &str, location: &str) -> Result<(), Box<dyn std::error::Error>> {
+    if let Err(e) = crate::config::reload() {
+        return Err(format!("Erro ao recarregar config: {}", e).into());
+    }
+
     unsafe {
-        let mut h_printer: HANDLE = HANDLE::default();
+        let mut h_printer = PRINTER_HANDLE::default();
         
-        let prn = crate::config::get().zpl.clone();
+        let prn = crate::config::get().zpl;
         // Dados da constante convertidos para bytes para a Win32 API
         let prn_file = prn.replace("[LOCAL_ESTOQUE]", location);
         println!("{}", prn_file);

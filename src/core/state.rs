@@ -15,6 +15,7 @@ pub struct State {
     pub printers: Vec<String>,
     pub selected_printer: Option<String>,
     pub count_copies: i32,
+    pub new_location_input: String,
 }
 
 impl Default for State {
@@ -24,7 +25,7 @@ impl Default for State {
             show_error: false,
             msg_toast: String::new(),
             search_query: String::new(),
-            locations: crate::config::get().locais.clone()
+            locations: crate::config::get().locais
                 .into_iter()
                 .map(|local| TableRow {
                     description: local,
@@ -34,6 +35,7 @@ impl Default for State {
             printers: get_printers().expect("Error getting printers."),
             selected_printer: None,
             count_copies: 1,
+            new_location_input: String::new(),
         }
     }
 }
